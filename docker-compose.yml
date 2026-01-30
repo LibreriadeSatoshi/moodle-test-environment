@@ -1,0 +1,7 @@
+services:
+  testmoodle:
+    build: .
+    ports:
+      - "8888:80"
+    stdin_open: true
+    tty: true

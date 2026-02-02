@@ -80,6 +80,13 @@ docker compose down
   ```
   Then follow the script's instructions.
 
+> Note: the following untracked files and directories should be preserved from version to version, they correspond to setups, mods, and themes. Checking out the repository won't have any effect on them, but you can save them manually just in case.
+  ```
+  composer-setup.php
+	public/mod/hvp/
+	public/theme/scholastica/
+  ```
+
 2.3- If the script fails with the assertion `PHP setting max_input_vars must be at least 5000.`, increase the value in the `php.ini` file:
   ```bash
   echo "max_input_vars = 5000" >> /etc/php/{php-version}/cli/php.ini

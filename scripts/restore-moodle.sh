@@ -29,8 +29,8 @@ tar xzf $BACKUP_DIR/moodledata.tar.gz -C .
 echo "Done."
 
 echo "Restoring moodle database..."
-gunzip $BACKUP_DIR/moodle-database.sql.gz
-cat $BACKUP_DIR/moodle-database.sql | psql -h localhost -U moodle_user -d moodle
+gunzip -k $BACKUP_DIR/moodle-database.sql.gz
+psql -h localhost -U moodle_user -d moodle -f $BACKUP_DIR/moodle-database.sql
 echo "Done."
 
 echo "Restore completed."

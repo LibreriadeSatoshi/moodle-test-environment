@@ -108,8 +108,9 @@ In the event an upgrade fails, or you need to set up a previous version, you can
   ```bash
   scp -i ~/.ssh/moodle-mvp.pem scripts/restore-moodle.sh ubuntu@moodle.host.machine:.
   ```
+2- **Important**: the restoration script **assumes an empty database**, to make a proper restoration you must first wipe it out, otherwise, keys will end up being duplicated. Since this is a very delicate process and should be done very concsiously, a command for this step is not provided.
 
-2- Run the restoration script on the host machine:
+3- Run the restoration script on the host machine:
   ```bash
   export PGPASSWORD='<dbpass>'
   # show available backups

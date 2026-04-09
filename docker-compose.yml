@@ -3,5 +3,10 @@ services:
     build: .
     ports:
       - "8888:80"
+    volumes:
+      - ./libreria-moodle:/root/libreria-moodle
+      # Overlay-patch: mod_hvp's curl::put signature drifted from core in Moodle 5.x.
+      # We bind-mount a fixed copy on top of the submodule file so the source stays clean.
+      - ./patches/hvp-curl.php:/root/libreria-moodle/public/mod/hvp/classes/curl.php
     stdin_open: true
     tty: true

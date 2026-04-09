@@ -1,0 +1,3 @@
+[submodule "libreria-moodle"]
+	path = libreria-moodle
+	url = git@github.com:LibreriadeSatoshi/custom-moodle.git

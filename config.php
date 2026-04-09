@@ -23,6 +23,10 @@ $CFG->admin     = 'admin';
 
 $CFG->directorypermissions = 02777;
 
+// Debug — show actual DB errors during bring-up. Remove once stable.
+$CFG->debug = (E_ALL | E_STRICT);
+$CFG->debugdisplay = 1;
+
 require_once(__DIR__ . '/lib/setup.php');
 
 // There is no php closing tag in this file,

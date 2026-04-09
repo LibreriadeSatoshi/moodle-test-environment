@@ -1,122 +1,38 @@
-# Playbook for upgrading Moodle
+# Moodle Test Environment
 
-## Preparations
-1- To do the upgrade you will need:
-  - The host's IP or domain name.
-  - `ssh` access, either a `.pem` private key, or your own public key to be added to `authorized_keys`.
-  Ask @Ivan for these.
+Local Docker environment for testing Moodle plugins and testing upgrades. Can restore backups to replicate the production environment.
 
-2- Use `ssh` to log into the host machine, and look for the database password.
+## Requirements
+
+- Docker and Docker Compose
+- SSH access to the Moodle host (`~/.ssh/moodle-mvp.pem`) — only needed to fetch backups. Ask @Ivan for it.
+- The `libreria-moodle` submodule must be initialized:
   ```bash
-  ssh -i ~/.ssh/moodle-mvp.pem ubuntu@moodle.host.machine
-  sudo cat moodle/config.php
+  git submodule update --init
   ```
-  Look for `$CFG->dbpass` and note it down.
 
-3- To make a backup, copy the `scripts/backup-moodle.sh` script to the moodle host.
+## Running a local clean test environment
+
+Boots a fresh Moodle install with Librería's plugins against an empty Postgres database.
+
+1- Start the container:
   ```bash
-  scp -i ~/.ssh/moodle-mvp.pem scripts/backup-moodle.sh ubuntu@moodle.host.machine:.
-  ssh -i ~/.ssh/moodle-mvp.pem ubuntu@moodle.host.machine
+  docker compose up
   ```
-
-4- Configure the database password, and run the backup script.
+2- Wait for the `Started.` log line, then open `http://localhost:8888`.
+3- Log in with the seeded admin account:
+  - user: `admin`
+  - password: `Admin1234!`
+4- To get a shell inside the container:
   ```bash
-  export PGPASSWORD='<dbpass>'
-  sudo -E ./backup-moodle.sh
+  docker compose exec -ti testmoodle bash
   ```
-  Your backup will be stored at `backup/<YYYY-MM-DD-HHMM>/`.
-
-
-## Local Test Environment
-All the upgrade steps can be run locally on a docker test environment, to set it up, follow these steps:
-
-1- Fetch a backup from the host machine:
-```bash
-# show available backups
-./scripts/fetch-moodle-backup.sh
-# fetch a specific backup
-./scripts/fetch-moodle-backup.sh <YYYY-MM-DD-HHMM>
-```
-
-2- Start the test environment:
-```bash
-docker compose up
-```
-Moodle should be available at `http://localhost:8888` after the log shows `Started.`.
-
-To get into the container run:
-```bash
-docker compose exec -ti testmoodle bash
-```
-
-When finished, stop and cleanup the container:
-```bash
-docker compose down
-```
-
-> Note: for the local test environment, the Postgres database password is set to `pass`.
-> Note: the test environment always restores from the local backup when starting, restarting a container without a proper cleanup will not work properly.
-
-## Upgrade Steps
-1- First let's set Moodle in maintenance mode:
+5- To stop and clean up:
   ```bash
-  cp moodledata/climaintenance.html.disabled moodledata/climaintenance.html
-  cd moodle
-  sudo /usr/bin/php admin/cli/maintenance.php --enable
+  docker compose down
   ```
 
-2.1- There are two ways to upgrade, using the upgrade script directly, which will upgrade to the latest stable version:
-   ```bash
-   sudo /usr/bin/php admin/cli/upgrade.php
-   ```
+> Note: the Postgres password is `pass`. The database is recreated on every `up`, so always `down` before restarting.
 
-2.2- Or first pulling the bleeding edge version from git, and then running the upgrade script:
-  ```bash
-  # Assuming we have not made any changes to Moodle's source code,
-  # the checkout discards any permission change made along the way.
-  git checkout .
-  git pull
-  sudo /usr/bin/php admin/cli/upgrade.php
-  ```
-  Then follow the script's instructions.
-
-> Note: the following untracked files and directories should be preserved from version to version, they correspond to setups, mods, and themes. Checking out the repository won't have any effect on them, but you can save them manually just in case.
-  ```
-  composer-setup.php
-	public/mod/hvp/
-	public/theme/scholastica/
-  ```
-
-2.3- If the script fails with the assertion `PHP setting max_input_vars must be at least 5000.`, increase the value in the `php.ini` file:
-  ```bash
-  echo "max_input_vars = 5000" >> /etc/php/{php-version}/cli/php.ini
-  ```
-  or edit it manually, then run the upgrade script again.
-
-3- Disable maintenance mode:
-  ```bash
-  sudo /usr/bin/php admin/cli/maintenance.php --disable
-  ```
-
-> Note: More information on the upgrade process via CLI can be found in the [Moodle documentation](https://docs.moodle.org/501/en/Administration_via_command_line)
-
-
-## Backup restoration
-In the event an upgrade fails, or you need to set up a previous version, you can restore from a backup.
-
-1- From your own local machine copy the restoration script:
-  ```bash
-  scp -i ~/.ssh/moodle-mvp.pem scripts/restore-moodle.sh ubuntu@moodle.host.machine:.
-  ```
-2- **Important**: the restoration script **assumes an empty database**, to make a proper restoration you must first wipe it out, otherwise, keys will end up being duplicated. Since this is a very delicate process and should be done very concsiously, a command for this step is not provided.
-
-3- Run the restoration script on the host machine:
-  ```bash
-  export PGPASSWORD='<dbpass>'
-  # show available backups
-  sudo -E ./restore-moodle.sh
-  # restore the latest backup
-  sudo -E ./restore-moodle.sh latest
-  # restore a specific backup
-  sudo -E ./restore-moodle.sh <YYYY-MM-DD-HHMM>
-  ```
+## Running a local test environment replicating the production environment
+`TODO`

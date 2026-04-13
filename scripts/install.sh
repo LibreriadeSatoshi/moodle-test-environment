@@ -8,14 +8,8 @@ su - postgres -c "psql -c \"CREATE DATABASE moodle OWNER moodle_user;\""
 # PG15+ no longer grants CREATE on public schema to non-owners; hand it to moodle_user
 su - postgres -c "psql -d moodle -c \"ALTER SCHEMA public OWNER TO moodle_user;\""
 
-# Restore backup
-# ./restore-moodle.sh latest
-
 # Place config.php in the libreria-moodle volume
 cp config.php /root/libreria-moodle/config.php
-
-# Setup the maintenance page for later
-# mv climaintenance.html moodledata/climaintenance.html.disabled
 
 # Create moodledata
 mkdir -p /root/moodledata

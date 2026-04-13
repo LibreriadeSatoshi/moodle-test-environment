@@ -9,12 +9,12 @@ WORKDIR /root
 COPY moodle.conf /etc/apache2/sites-available
 COPY scripts/* .
 
-# COPY backup ./backup
 COPY config.php .
 COPY climaintenance.html .
 
 RUN ./build.sh
 
+VOLUME /root/backup
 VOLUME /root/libreria-moodle
 
 CMD ["bash", "-c", "./install.sh && echo 'Started.' && sleep infinity"]

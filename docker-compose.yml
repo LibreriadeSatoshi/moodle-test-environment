@@ -10,3 +10,15 @@ services:
       - ./patches/hvp-curl.php:/root/libreria-moodle/public/mod/hvp/classes/curl.php
     stdin_open: true
     tty: true
+
+  testmoodle-restore:
+    build: .
+    ports:
+      - "8888:80"
+    volumes:
+      - ./libreria-moodle:/root/libreria-moodle
+      - ./backup:/root/backup
+      - ./patches/hvp-curl.php:/root/libreria-moodle/public/mod/hvp/classes/curl.php
+    stdin_open: true
+    tty: true
+    command: ["bash", "-c", "./install-from-backup.sh && echo 'Started.' && sleep infinity"]

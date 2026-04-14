@@ -42,7 +42,10 @@ Boots Moodle restoring the latest backup from `backup/` into the database.
   docker compose up testmoodle-restore
   ```
 2- Wait for the `Started.` log line, then open `http://localhost:8888`.
-3- To stop and clean up:
+3- Log in with the seeded admin account:
+  - user: `admin`
+  - password: `Admin1234!`
+4- To stop and clean up:
   ```bash
   docker compose down
   ```

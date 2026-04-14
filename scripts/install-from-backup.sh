@@ -10,6 +10,8 @@ cp config.php /root/libreria-moodle/config.php
 
 ./restore-moodle.sh latest
 
+php ./create-admin.php
+
 chown -R www-data:www-data /root/moodledata
 
 apache2ctl start

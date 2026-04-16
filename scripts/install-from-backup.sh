@@ -8,6 +8,9 @@ su - postgres -c "psql -d moodle -c \"ALTER SCHEMA public OWNER TO moodle_user;\
 
 cp config.php /root/libreria-moodle/config.php
 
+# Overlay-patch: mod_hvp's curl::put signature drifted from core in Moodle 5.x.
+cp /root/patches/hvp-curl.php /root/libreria-moodle/public/mod/hvp/classes/curl.php
+
 ./restore-moodle.sh latest
 
 php ./create-admin.php

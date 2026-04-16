@@ -11,43 +11,34 @@ Local Docker environment for testing Moodle plugins and testing upgrades. Can re
   ```
 
 
-## Running a local clean test environment
+## Running a local clean test environmentgit submodule update --init --recursive
 Boots a fresh Moodle install with Librería's plugins against an empty Postgres database.
 
-1- Start the container:
+1- Clone this repo with:
+```
+git clone --recurse-submodules git@github.com:LibreriadeSatoshi/moodle-test-environment.git
+```
+2- Start the container:
   ```bash
   docker compose up testmoodle
   ```
-2- Wait for the `Started.` log line, then open `http://localhost:8888`.
-3- Log in with the seeded admin account:
+3- Wait for the `Started.` log line, then open `http://localhost:8888`.
+4- Log in with the seeded admin account:
   - user: `admin`
   - password: `Admin1234!`
-4- To get a shell inside the container:
+5- To get a shell inside the container:
   ```bash
   docker compose exec -ti testmoodle bash
   ```
-5- To stop and clean up:
+6- To stop and clean up:
   ```bash
   docker compose down
   ```
 
 > Note: the Postgres password is `pass`. The database is recreated on every `up`, so always `down` before restarting.
+> Note: the service binds port 8888.
 
 
 ## Running a local test environment replicating the production environment
-Boots Moodle restoring the latest backup from `backup/` into the database.
-
-1- Start the container:
-  ```bash
-  docker compose up testmoodle-restore
-  ```
-2- Wait for the `Started.` log line, then open `http://localhost:8888`.
-3- Log in with the seeded admin account:
-  - user: `admin`
-  - password: `Admin1234!`
-4- To stop and clean up:
-  ```bash
-  docker compose down
-  ```
-
-> Note: both services bind port 8888, so only run one at a time.
+To boot Moodle restoring the latest backup from `backup/` into the database, follow the same steps, but instead of `testmoodle` use `testmoodle-restore` on the second steop.
+> Note: this service also bind port 8888, so only run one at a time.

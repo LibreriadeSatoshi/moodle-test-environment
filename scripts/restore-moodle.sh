@@ -20,10 +20,6 @@ BACKUP_DIR="backup/$BACKUP_DATE"
 
 echo "Restoring from '$BACKUP_DIR'."
 
-echo "Restoring moodle software..."
-tar xzf $BACKUP_DIR/moodle.tar.gz -C .
-echo "Done."
-
 echo "Restoring moodledata..."
 tar xzf $BACKUP_DIR/moodledata.tar.gz -C .
 echo "Done."

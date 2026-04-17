@@ -11,10 +11,6 @@ BACKUP_DIR="backup/$(date +%Y-%m-%d-%H%M)"
 echo "Backing up to '$BACKUP_DIR'."
 mkdir -p $BACKUP_DIR
 
-echo "Backing up moodle software..."
-tar czf $BACKUP_DIR/moodle.tar.gz moodle
-echo "Done."
-
 echo "Backing up moodledata..."
 tar czf $BACKUP_DIR/moodledata.tar.gz moodledata
 echo "Done."

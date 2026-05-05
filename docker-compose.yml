@@ -1,12 +1,20 @@
+volumes:
+  pgdata:
+  moodledata:
+
 services:
-  testmoodle:
+  testmoodle-fresh:
     build: .
     ports:
       - "8888:80"
     volumes:
       - ./libreria-moodle:/root/libreria-moodle
+      - ./backup:/root/backup
+      - pgdata:/var/lib/postgresql
+      - moodledata:/root/moodledata
     stdin_open: true
     tty: true
+    command: ["bash", "-c", "./install.sh && echo 'Started.' && sleep infinity"]
 
   testmoodle-restore:
     build: .
@@ -15,6 +23,21 @@ services:
     volumes:
       - ./libreria-moodle:/root/libreria-moodle
       - ./backup:/root/backup
+      - pgdata:/var/lib/postgresql
+      - moodledata:/root/moodledata
     stdin_open: true
     tty: true
     command: ["bash", "-c", "./install-from-backup.sh && echo 'Started.' && sleep infinity"]
+
+  testmoodle:
+    build: .
+    ports:
+      - "8888:80"
+    volumes:
+      - ./libreria-moodle:/root/libreria-moodle
+      - ./backup:/root/backup
+      - pgdata:/var/lib/postgresql
+      - moodledata:/root/moodledata
+    stdin_open: true
+    tty: true
+    command: ["bash", "-c", "./start.sh && echo 'Started.' && sleep infinity"]

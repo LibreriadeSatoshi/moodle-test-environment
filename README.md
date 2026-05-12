@@ -11,6 +11,10 @@ Local Docker environment for testing Moodle plugins and testing upgrades. Can re
   If you already cloned without submodules:
   ```bash
   git submodule update --init
+  ```
+  Then:
+  ```bash
+  cd libreria-moodle
   git checkout {branch}
   ```
   Fill in `{branch}` with `dev` or `main`, depending of which environment you want to test locally.

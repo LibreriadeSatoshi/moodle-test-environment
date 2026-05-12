@@ -17,7 +17,12 @@ $CFG->dboptions = array (
   'dbsocket' => '',
 );
 
-$CFG->wwwroot   = 'http://localhost:8888';
+if (PHP_SAPI === 'cli') {
+    $CFG->wwwroot = getenv('MOODLE_WWWROOT') ?: 'http://localhost:8888';
+} else {
+    $scheme = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+    $CFG->wwwroot = $scheme . '://' . $_SERVER['HTTP_HOST'];
+}
 $CFG->dataroot  = '/root/moodledata';
 $CFG->admin     = 'admin';
 

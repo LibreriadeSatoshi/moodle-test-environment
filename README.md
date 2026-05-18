@@ -4,6 +4,7 @@ Local Docker environment for testing Moodle plugins and testing upgrades. Can re
 
 ## Requirements
 - Docker and Docker Compose
+- [Add your ssh key to github account](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account)
 - Clone with submodules:
   ```bash
   git clone --branch {branch} --recurse-submodules git@github.com:LibreriadeSatoshi/moodle-test-environment.git

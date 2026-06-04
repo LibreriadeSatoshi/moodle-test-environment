@@ -86,10 +86,12 @@ Then re-run one of the two init services above.
 The `backup/` directory is **git ignored**. To capture the current state as a new backup:
 
 1- Boot the environment and make all the changes you want.
+
 2- Get a shell inside the environment:
 ```bash
 docker compose exec -ti testmoodle bash
 ```
+
 3- Run the backup tool — the backup is stored in the host's `backup/` directory:
 ```bash
 ./backup-moodle.sh

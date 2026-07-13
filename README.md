@@ -32,6 +32,16 @@ The environment is split across three Compose services that share two named volu
 All three publish port `8888`, so only one runs at a time. Pick an init service the first time, then use `testmoodle` for every subsequent boot.
 
 
+## Deploying to Lorien
+Lorien mirrors `custom-moodle@dev`. Deploy with a single command instead of running the pull/submodule/upgrade/purge steps by hand:
+
+```bash
+ssh -t root@10.17.9.36 '~/moodle-test-environment/deploy.sh'
+```
+
+The script is lock-guarded (safe for the whole team), idempotent, and also handles the recurring `mod_hvp` overlay. Pass `--build` when the Dockerfile changed. See [docs/lorien-deploy.md](docs/lorien-deploy.md) for details and the planned auto-deploy-on-push setup.
+
+
 ## Initializing the environment
 Pick **one** of the two init paths. You only do this once — the data lives in named volumes after that.
 

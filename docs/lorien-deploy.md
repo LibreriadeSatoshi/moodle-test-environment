@@ -8,34 +8,40 @@ upgrade / purge commands by hand, use the one-command deploy script.
 On Lorien:
 
 ```bash
-~/moodle-test-environment/deploy.sh
+~/moodle-test-environment/deploy-lorien.sh
 ```
 
 Or from your laptop (ZeroTier):
 
 ```bash
-ssh -t root@10.17.9.36 '~/moodle-test-environment/deploy.sh'
+ssh -t root@10.17.9.36 '~/moodle-test-environment/deploy-lorien.sh'
 ```
 
-What it does (see [`deploy.sh`](../deploy.sh)):
+What it does (see [`deploy-lorien.sh`](../deploy-lorien.sh)):
 
 1. Takes a lock so two people can't deploy at once.
 2. Discards the recurring `mod_hvp/classes/curl.php` overlay, then
    `git pull --rebase --autostash origin dev`.
 3. `git submodule sync/update --recursive`.
 4. Detects the container's admin CLI dir and runs `upgrade.php` + `purge_caches.php`.
-5. Prints the resulting `auth/nostr` submodule pointer.
+5. Prints the full recursive submodule status, so plugin-version downgrades are visible at a glance.
 
 Pass `--build` when the Dockerfile changed (e.g. a new PHP extension):
 
 ```bash
-~/moodle-test-environment/deploy.sh --build
+~/moodle-test-environment/deploy-lorien.sh --build
+```
+
+Use `--dry-run` to preview (incoming commits, submodule status, the CLI it would run) without changing anything:
+
+```bash
+~/moodle-test-environment/deploy-lorien.sh --dry-run
 ```
 
 **Tip:** add a shell alias on your machine so it's a single word:
 
 ```bash
-alias lorien-deploy="ssh -t root@10.17.9.36 '~/moodle-test-environment/deploy.sh'"
+alias lorien-deploy="ssh -t root@10.17.9.36 '~/moodle-test-environment/deploy-lorien.sh'"
 ```
 
 ## Level 2 — auto-deploy on push to `dev` (planned)
@@ -56,20 +62,20 @@ Recommended approach — **GitHub Actions self-hosted runner on Lorien**:
      push:
        branches: [dev]
    concurrency:
-     group: lorien-deploy      # matches deploy.sh's flock: never overlap
+     group: lorien-deploy      # matches deploy-lorien.sh's flock: never overlap
      cancel-in-progress: false
    jobs:
      deploy:
        runs-on: [self-hosted, lorien]
        steps:
-         - run: ~/moodle-test-environment/deploy.sh
+         - run: ~/moodle-test-environment/deploy-lorien.sh
    ```
 
-The workflow just calls the same `deploy.sh`, so there is a single source of
+The workflow just calls the same `deploy-lorien.sh`, so there is a single source of
 truth for how a deploy works. Decision to confirm before enabling: are we OK
 with **any** push to `dev` touching Lorien? (Given the current model, yes — but
 WIP should go to feature branches, not `dev`.)
 
 Alternative without GitHub Actions: a `systemd` timer on Lorien that runs
-`git -C libreria-moodle fetch` every N minutes and calls `deploy.sh` when
+`git -C libreria-moodle fetch` every N minutes and calls `deploy-lorien.sh` when
 `origin/dev` moved. Simpler infra, but polling instead of instant.

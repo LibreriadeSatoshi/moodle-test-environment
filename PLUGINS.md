@@ -16,7 +16,6 @@ Other Moodle plugin types (`public/blocks/`, `public/local/`, `public/enrol/`, .
 Our current plugins are at:
 - `public/mod/attendance`
 - `public/mod/customcert`
-- `public/mod/hvp`
 - `public/payment/gateway/btcpay`
 - `public/payment/gateway/paypal`
 - `public/payment/gateway/stripe`

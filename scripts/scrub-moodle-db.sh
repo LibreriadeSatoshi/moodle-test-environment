@@ -157,8 +157,7 @@ echo "Clearing uploaded-file metadata..."
 TRUNCATE TABLE
   mdl_files,
   mdl_files_reference,
-  mdl_infected_files,
-  mdl_hvp_tmpfiles
+  mdl_infected_files
 RESTART IDENTITY CASCADE;
 SQL
 

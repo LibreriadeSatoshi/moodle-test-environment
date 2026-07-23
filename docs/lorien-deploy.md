@@ -20,8 +20,7 @@ ssh -t root@10.17.9.36 '~/moodle-test-environment/deploy-lorien.sh'
 What it does (see [`deploy-lorien.sh`](../deploy-lorien.sh)):
 
 1. Takes a lock so two people can't deploy at once.
-2. Discards the recurring `mod_hvp/classes/curl.php` overlay, then
-   `git pull --rebase --autostash origin dev`.
+2. `git pull --rebase --autostash origin dev`.
 3. `git submodule sync/update --recursive`.
 4. Detects the container's admin CLI dir and runs `upgrade.php` + `purge_caches.php`.
 5. Prints the full recursive submodule status, so plugin-version downgrades are visible at a glance.

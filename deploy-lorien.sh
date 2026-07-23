@@ -77,11 +77,6 @@ fi
 log "Updating $CHECKOUT to origin/$BRANCH…"
 cd "$CHECKOUT"
 
-# mod_hvp's curl.php is overlaid at container start, so it shows as modified on
-# every run. Discard it so the rebase never gets blocked. (Removed once ENG-358
-# switches the overlay to a read-only bind mount.)
-git checkout -- public/mod/hvp/classes/curl.php 2>/dev/null || true
-
 git checkout "$BRANCH"
 git pull --rebase --autostash origin "$BRANCH"
 git submodule sync --recursive

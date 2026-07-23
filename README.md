@@ -39,7 +39,7 @@ Lorien mirrors `custom-moodle@dev`. Deploy with a single command instead of runn
 ssh -t root@10.17.9.36 '~/moodle-test-environment/deploy-lorien.sh'
 ```
 
-The script is lock-guarded (safe for the whole team), idempotent, and also handles the recurring `mod_hvp` overlay. Pass `--build` when the Dockerfile changed. See [docs/lorien-deploy.md](docs/lorien-deploy.md) for details and the planned auto-deploy-on-push setup.
+The script is lock-guarded (safe for the whole team) and idempotent. Pass `--build` when the Dockerfile changed. See [docs/lorien-deploy.md](docs/lorien-deploy.md) for details and the planned auto-deploy-on-push setup.
 
 
 ## Initializing the environment

@@ -8,7 +8,6 @@ WORKDIR /root
 
 COPY moodle.conf /etc/apache2/sites-available
 COPY scripts/* .
-COPY patches/ ./patches/
 
 COPY config.php .
 COPY climaintenance.html .
